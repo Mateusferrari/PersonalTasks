@@ -1,4 +1,4 @@
-package com.seunome.personaltasks.model
+package com.mateus.personaltasks.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

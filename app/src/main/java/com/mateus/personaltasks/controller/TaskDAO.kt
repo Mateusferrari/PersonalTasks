@@ -1,7 +1,7 @@
-package com.seunome.personaltasks.controller
+package com.mateus.personaltasks.controller
 
 import androidx.room.*
-import com.seunome.personaltasks.model.Task
+import com.mateus.personaltasks.model.Task
 
 @Dao
 interface TaskDAO {
