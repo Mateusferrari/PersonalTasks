@@ -1,8 +1,10 @@
 package com.mateus.personaltasks.view
 
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +28,16 @@ class MainActivity : AppCompatActivity() {
 
         taskList = AppDatabase.getDatabase(this).taskDao().getAll()
 
-        adapter = TaskAdapter(taskList)
+        adapter = TaskAdapter(taskList) { view, task ->
+            selectedTask = task
+            view.showContextMenu()
+        }
 
         binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTasks.adapter = adapter
+
+        registerForContextMenu(binding.recyclerViewTasks)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,5 +54,32 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private var selectedTask: Task? = null
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.menu_context, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_edit -> {
+                Toast.makeText(this, "Editar: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_delete -> {
+                Toast.makeText(this, "Excluir: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_details -> {
+                Toast.makeText(this, "Detalhes: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onContextItemSelected(item)
+        }
+    }
+
+
 
 }

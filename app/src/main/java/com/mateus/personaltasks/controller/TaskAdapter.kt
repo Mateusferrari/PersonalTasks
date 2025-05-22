@@ -9,7 +9,8 @@ import com.mateus.personaltasks.R
 import com.mateus.personaltasks.model.Task
 
 class TaskAdapter(
-    private var taskList: List<Task>
+    private var taskList: List<Task>,
+    private val onItemLongClick: (View, Task) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +30,10 @@ class TaskAdapter(
         holder.textTitle.text = task.title
         holder.textDescription.text = task.description
         holder.textDeadline.text = "Data limite: ${task.deadline}"
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick(it, task)
+            true
+        }
     }
 
     override fun getItemCount(): Int {
