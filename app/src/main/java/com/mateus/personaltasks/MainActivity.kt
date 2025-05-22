@@ -1,14 +1,31 @@
-package com.mateus.personaltasks
+package com.mateus.personaltasks.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mateus.personaltasks.R
+import com.mateus.personaltasks.controller.TaskAdapter
+import com.mateus.personaltasks.database.AppDatabase
+import com.mateus.personaltasks.databinding.ActivityMainBinding
+import com.mateus.personaltasks.model.Task
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: TaskAdapter
+    private lateinit var taskList: List<Task>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        taskList = AppDatabase.getDatabase(this).taskDao().getAll()
+
+        adapter = TaskAdapter(taskList)
+
+        binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewTasks.adapter = adapter
     }
 }
