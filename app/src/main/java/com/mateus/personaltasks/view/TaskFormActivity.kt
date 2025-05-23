@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mateus.personaltasks.databinding.ActivityTaskFormBinding
 import java.util.*
+import android.view.inputmethod.InputMethodManager
+import com.mateus.personaltasks.database.AppDatabase
+import com.mateus.personaltasks.model.Task
+
 
 class TaskFormActivity : AppCompatActivity() {
 
@@ -14,6 +18,12 @@ class TaskFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.editDescription.requestFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
+
+
 
         binding.editDeadline.setOnClickListener {
             showDatePicker()
@@ -27,6 +37,13 @@ class TaskFormActivity : AppCompatActivity() {
             val title = binding.editTitle.text.toString()
             val description = binding.editDescription.text.toString()
             val deadline = binding.editDeadline.text.toString()
+            val task = Task(
+                title = title,
+                description = description,
+                deadline = deadline
+            )
+
+            AppDatabase.getDatabase(this).taskDao().insert(task)
 
             finish()
         }

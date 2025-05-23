@@ -28,9 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        taskList = AppDatabase.getDatabase(this).taskDao().getAll()
-
-        adapter = TaskAdapter(taskList) { view, task ->
+        adapter = TaskAdapter(listOf()) { view, task ->
             selectedTask = task
             view.showContextMenu()
         }
@@ -38,9 +36,23 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTasks.adapter = adapter
 
+
+        binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewTasks.adapter = adapter
+
         registerForContextMenu(binding.recyclerViewTasks)
 
+        setSupportActionBar(binding.toolbar)
+
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        val tasks = AppDatabase.getDatabase(this).taskDao().getAll()
+        adapter.updateTasks(tasks)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
