@@ -29,4 +29,3 @@ Aplicativo Android de gerenciamento de tarefas desenvolvido para a disciplina de
 
 ## 👨‍💻 Desenvolvedor
 - Mateus Ferrari
-- SC3034828
