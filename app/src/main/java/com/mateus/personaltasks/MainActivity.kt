@@ -13,6 +13,8 @@ import com.mateus.personaltasks.controller.TaskAdapter
 import com.mateus.personaltasks.database.AppDatabase
 import com.mateus.personaltasks.databinding.ActivityMainBinding
 import com.mateus.personaltasks.model.Task
+import android.content.Intent
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,9 +50,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_add -> {
-                Toast.makeText(this, "Nova Tarefa clicada", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, TaskFormActivity::class.java)
+                startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
