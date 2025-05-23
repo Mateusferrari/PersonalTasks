@@ -2,28 +2,40 @@ package com.mateus.personaltasks.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.mateus.personaltasks.databinding.ActivityTaskFormBinding
-import java.util.*
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.mateus.personaltasks.database.AppDatabase
+import com.mateus.personaltasks.databinding.ActivityTaskFormBinding
 import com.mateus.personaltasks.model.Task
-
+import java.util.*
 
 class TaskFormActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaskFormBinding
+    private var taskId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.editDescription.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
+        val receivedTask = intent.getSerializableExtra("task") as? Task
+        val readOnly = intent.getBooleanExtra("readOnly", false)
 
+        if (receivedTask != null) {
+            taskId = receivedTask.id
+            binding.editTitle.setText(receivedTask.title)
+            binding.editDescription.setText(receivedTask.description)
+            binding.editDeadline.setText(receivedTask.deadline)
 
+            if (readOnly) {
+                binding.editTitle.isEnabled = false
+                binding.editDescription.isEnabled = false
+                binding.editDeadline.isEnabled = false
+                binding.buttonSave.visibility = View.GONE
+            }
+        }
 
         binding.editDeadline.setOnClickListener {
             showDatePicker()
@@ -37,16 +49,20 @@ class TaskFormActivity : AppCompatActivity() {
             val title = binding.editTitle.text.toString()
             val description = binding.editDescription.text.toString()
             val deadline = binding.editDeadline.text.toString()
-            val task = Task(
-                title = title,
-                description = description,
-                deadline = deadline
-            )
+            val dao = AppDatabase.getDatabase(this).taskDao()
 
-            AppDatabase.getDatabase(this).taskDao().insert(task)
+            if (taskId != null) {
+                dao.update(Task(id = taskId!!, title = title, description = description, deadline = deadline))
+            } else {
+                dao.insert(Task(title = title, description = description, deadline = deadline))
+            }
 
             finish()
         }
+
+        binding.editDescription.requestFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun showDatePicker() {

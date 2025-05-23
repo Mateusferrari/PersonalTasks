@@ -1,5 +1,6 @@
 package com.mateus.personaltasks.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.Menu
@@ -13,20 +14,19 @@ import com.mateus.personaltasks.controller.TaskAdapter
 import com.mateus.personaltasks.database.AppDatabase
 import com.mateus.personaltasks.databinding.ActivityMainBinding
 import com.mateus.personaltasks.model.Task
-import android.content.Intent
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TaskAdapter
-    private lateinit var taskList: List<Task>
+    private var selectedTask: Task? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
 
         adapter = TaskAdapter(listOf()) { view, task ->
             selectedTask = task
@@ -36,15 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTasks.adapter = adapter
 
-
-        binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewTasks.adapter = adapter
-
         registerForContextMenu(binding.recyclerViewTasks)
-
-        setSupportActionBar(binding.toolbar)
-
-
     }
 
     override fun onResume() {
@@ -52,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         val tasks = AppDatabase.getDatabase(this).taskDao().getAll()
         adapter.updateTasks(tasks)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -62,16 +53,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_add -> {
-                val intent = Intent(this, TaskFormActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, TaskFormActivity::class.java))
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    private var selectedTask: Task? = null
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
@@ -81,21 +68,30 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_edit -> {
-                Toast.makeText(this, "Editar: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                selectedTask?.let {
+                    val intent = Intent(this, TaskFormActivity::class.java)
+                    intent.putExtra("task", it)
+                    startActivity(intent)
+                }
                 true
             }
             R.id.menu_delete -> {
-                Toast.makeText(this, "Excluir: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                selectedTask?.let {
+                    AppDatabase.getDatabase(this).taskDao().delete(it)
+                    adapter.updateTasks(AppDatabase.getDatabase(this).taskDao().getAll())
+                }
                 true
             }
             R.id.menu_details -> {
-                Toast.makeText(this, "Detalhes: ${selectedTask?.title}", Toast.LENGTH_SHORT).show()
+                selectedTask?.let {
+                    val intent = Intent(this, TaskFormActivity::class.java)
+                    intent.putExtra("task", it)
+                    intent.putExtra("readOnly", true)
+                    startActivity(intent)
+                }
                 true
             }
             else -> super.onContextItemSelected(item)
         }
     }
-
-
-
 }
