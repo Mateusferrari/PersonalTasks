@@ -29,3 +29,6 @@ Aplicativo Android de gerenciamento de tarefas desenvolvido para a disciplina de
 
 ## 👨‍💻 Desenvolvedor
 - Mateus Ferrari
+
+## 🎥 Demonstração do App
+Assista ao vídeo de demonstração aqui - https://youtu.be/MfrEQG6T3jk
