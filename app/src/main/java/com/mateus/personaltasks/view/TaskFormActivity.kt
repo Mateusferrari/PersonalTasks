@@ -65,10 +65,11 @@ class TaskFormActivity : AppCompatActivity() {
         }
 
         if (!readOnly) {
-            binding.editDescription.requestFocus()
+            binding.editTitle.requestFocus()
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
+            imm.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
         }
+
     }
 
     private fun showDatePicker() {
