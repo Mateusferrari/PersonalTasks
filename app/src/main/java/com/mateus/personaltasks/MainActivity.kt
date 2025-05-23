@@ -6,7 +6,6 @@ import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mateus.personaltasks.R
@@ -28,14 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        adapter = TaskAdapter(listOf()) { view, task ->
+        adapter = TaskAdapter(listOf()) { task ->
             selectedTask = task
-            view.showContextMenu()
+            binding.recyclerViewTasks.showContextMenu()
         }
 
         binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTasks.adapter = adapter
-
         registerForContextMenu(binding.recyclerViewTasks)
     }
 

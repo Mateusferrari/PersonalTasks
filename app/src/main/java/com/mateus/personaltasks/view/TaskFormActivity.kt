@@ -37,18 +37,22 @@ class TaskFormActivity : AppCompatActivity() {
             }
         }
 
+
         binding.editDeadline.setOnClickListener {
             showDatePicker()
         }
+
 
         binding.buttonCancel.setOnClickListener {
             finish()
         }
 
+
         binding.buttonSave.setOnClickListener {
             val title = binding.editTitle.text.toString()
             val description = binding.editDescription.text.toString()
             val deadline = binding.editDeadline.text.toString()
+
             val dao = AppDatabase.getDatabase(this).taskDao()
 
             if (taskId != null) {
@@ -60,9 +64,11 @@ class TaskFormActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.editDescription.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
+        if (!readOnly) {
+            binding.editDescription.requestFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.editDescription, InputMethodManager.SHOW_IMPLICIT)
+        }
     }
 
     private fun showDatePicker() {
