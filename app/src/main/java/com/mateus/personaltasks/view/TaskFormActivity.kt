@@ -28,12 +28,15 @@ class TaskFormActivity : AppCompatActivity() {
             binding.editTitle.setText(receivedTask.title)
             binding.editDescription.setText(receivedTask.description)
             binding.editDeadline.setText(receivedTask.deadline)
+            binding.checkIsDone.isChecked = receivedTask.isDone
+
 
             if (readOnly) {
                 binding.editTitle.isEnabled = false
                 binding.editDescription.isEnabled = false
                 binding.editDeadline.isEnabled = false
                 binding.buttonSave.visibility = View.GONE
+                binding.checkIsDone.isEnabled = false
             }
         }
 
@@ -41,7 +44,6 @@ class TaskFormActivity : AppCompatActivity() {
         binding.editDeadline.setOnClickListener {
             showDatePicker()
         }
-
 
         binding.buttonCancel.setOnClickListener {
             finish()
@@ -52,13 +54,14 @@ class TaskFormActivity : AppCompatActivity() {
             val title = binding.editTitle.text.toString()
             val description = binding.editDescription.text.toString()
             val deadline = binding.editDeadline.text.toString()
-
             val dao = AppDatabase.getDatabase(this).taskDao()
 
+            val isDone = binding.checkIsDone.isChecked
+
             if (taskId != null) {
-                dao.update(Task(id = taskId!!, title = title, description = description, deadline = deadline))
+                dao.update(Task(id = taskId!!, title = title, description = description, deadline = deadline, isDone = isDone))
             } else {
-                dao.insert(Task(title = title, description = description, deadline = deadline))
+                dao.insert(Task(title = title, description = description, deadline = deadline, isDone = isDone))
             }
 
             finish()
@@ -86,3 +89,7 @@ class TaskFormActivity : AppCompatActivity() {
         dpd.show()
     }
 }
+
+
+
+

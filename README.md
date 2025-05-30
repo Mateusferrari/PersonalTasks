@@ -27,8 +27,8 @@ Aplicativo Android de gerenciamento de tarefas desenvolvido para a disciplina de
 1. Abra o projeto no Android Studio.
 2. Execute o projeto em um dispositivo físico ou emulador Android.
 
-## 👨‍💻 Desenvolvedor
-- Mateus Ferrari
+## 👨‍💻 Desenvolvedor teste
+- Mateus Ferrari de Assis Alves
 
 ## 🎥 Demonstração do App
 Assista ao vídeo de demonstração aqui - https://youtu.be/MfrEQG6T3jk

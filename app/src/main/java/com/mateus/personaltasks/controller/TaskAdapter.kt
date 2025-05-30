@@ -21,6 +21,9 @@ class TaskAdapter(
         holder.bind(tasks[position])
     }
 
+
+
+
     override fun getItemCount(): Int = tasks.size
 
     fun updateTasks(newTasks: List<Task>) {
@@ -32,6 +35,7 @@ class TaskAdapter(
         fun bind(task: Task) {
             binding.textTitle.text = task.title
             binding.textDeadline.text = task.deadline
+            binding.textStatus.text = if (task.isDone) "✅ Cumprida" else "🕗 Pendente"
 
             binding.root.setOnLongClickListener {
                 onLongClick(task)
