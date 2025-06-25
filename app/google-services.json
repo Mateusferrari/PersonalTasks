@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105803513440",
+    "project_id": "personaltasksfirebase",
+    "storage_bucket": "personaltasksfirebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105803513440:android:e020337ef6c817f0dc4d05",
+        "android_client_info": {
+          "package_name": "com.mateus.personaltasks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe-kF6_ZcKQfVpu5RoAWNU4JXtMwL26pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
