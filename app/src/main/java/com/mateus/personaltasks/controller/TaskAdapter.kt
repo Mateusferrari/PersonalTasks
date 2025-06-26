@@ -9,7 +9,7 @@ import com.mateus.personaltasks.model.Task
 
 class TaskAdapter(
     private var tasks: List<Task>,
-    private val onLongClick: (Task) -> Unit
+    private val onTaskOptionsClick: (View, Task) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -20,9 +20,6 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(tasks[position])
     }
-
-
-
 
     override fun getItemCount(): Int = tasks.size
 
@@ -38,12 +35,11 @@ class TaskAdapter(
             binding.textStatus.text = if (task.isDone) "✅ Cumprida" else "🕗 Pendente"
 
             binding.root.setOnLongClickListener {
-                onLongClick(task)
+                onTaskOptionsClick(it, task)
                 true
             }
 
-            // Remove clique simples
-            binding.root.setOnClickListener(null)
+            binding.root.setOnClickListener(null) // desativa clique simples
         }
     }
 }
