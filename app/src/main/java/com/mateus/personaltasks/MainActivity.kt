@@ -1,5 +1,6 @@
 package com.mateus.personaltasks.view
 
+import DeletedTasksActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
@@ -53,6 +54,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_add -> {
                 startActivity(Intent(this, TaskFormActivity::class.java))
+                true
+            }
+            R.id.menu_deleted_tasks -> {
+                startActivity(Intent(this, DeletedTasksActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
