@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_restore" android:title="Reativar tarefa"/>
+    <item android:id="@+id/menu_details" android:title="Detalhes"/>
+</menu>
