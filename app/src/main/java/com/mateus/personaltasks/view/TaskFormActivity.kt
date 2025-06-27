@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mateus.personaltasks.databinding.ActivityTaskFormBinding
@@ -16,11 +17,16 @@ class TaskFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTaskFormBinding
     private var currentTask: Task? = null
     private val repository = FirebaseTaskRepository()
+    private val priorities = listOf("Alta", "Média", "Baixa")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priorities)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerPriority.adapter = adapter
 
         val receivedTask = intent.getSerializableExtra("task") as? Task
         val readOnly = intent.getBooleanExtra("readOnly", false)
@@ -31,13 +37,15 @@ class TaskFormActivity : AppCompatActivity() {
             binding.editDescription.setText(receivedTask.description)
             binding.editDeadline.setText(receivedTask.deadline)
             binding.checkIsDone.isChecked = receivedTask.isDone
+            binding.spinnerPriority.setSelection(priorities.indexOf(receivedTask.prioridade))
 
             if (readOnly) {
                 binding.editTitle.isEnabled = false
                 binding.editDescription.isEnabled = false
                 binding.editDeadline.isEnabled = false
-                binding.buttonSave.visibility = View.GONE
                 binding.checkIsDone.isEnabled = false
+                binding.spinnerPriority.isEnabled = false
+                binding.buttonSave.visibility = View.GONE
             }
         }
 
@@ -54,13 +62,15 @@ class TaskFormActivity : AppCompatActivity() {
             val description = binding.editDescription.text.toString()
             val deadline = binding.editDeadline.text.toString()
             val isDone = binding.checkIsDone.isChecked
+            val prioridade = binding.spinnerPriority.selectedItem.toString()
 
             if (currentTask != null) {
                 val updated = currentTask!!.copy(
                     title = title,
                     description = description,
                     deadline = deadline,
-                    isDone = isDone
+                    isDone = isDone,
+                    prioridade = prioridade
                 )
                 repository.updateTask(updated, {
                     Toast.makeText(this, "Atualizada com sucesso", Toast.LENGTH_SHORT).show()
@@ -73,7 +83,8 @@ class TaskFormActivity : AppCompatActivity() {
                     title = title,
                     description = description,
                     deadline = deadline,
-                    isDone = isDone
+                    isDone = isDone,
+                    prioridade = prioridade
                 )
                 repository.addTask(newTask, {
                     Toast.makeText(this, "Tarefa salva", Toast.LENGTH_SHORT).show()

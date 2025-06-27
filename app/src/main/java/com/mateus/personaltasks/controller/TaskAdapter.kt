@@ -1,7 +1,6 @@
 package com.mateus.personaltasks.controller
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mateus.personaltasks.databinding.ItemTaskBinding
@@ -9,7 +8,7 @@ import com.mateus.personaltasks.model.Task
 
 class TaskAdapter(
     private var tasks: List<Task>,
-    private val onTaskOptionsClick: (View, Task) -> Unit
+    private val onLongClick: (Task) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -30,16 +29,16 @@ class TaskAdapter(
 
     inner class TaskViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
-            binding.textTitle.text = task.title
+            binding.textTitle.text = "${task.title} [${task.prioridade}]"
             binding.textDeadline.text = task.deadline
             binding.textStatus.text = if (task.isDone) "✅ Cumprida" else "🕗 Pendente"
 
             binding.root.setOnLongClickListener {
-                onTaskOptionsClick(it, task)
+                onLongClick(task)
                 true
             }
 
-            binding.root.setOnClickListener(null) // desativa clique simples
+            binding.root.setOnClickListener(null)
         }
     }
 }

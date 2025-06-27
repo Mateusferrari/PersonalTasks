@@ -70,7 +70,8 @@ class FirebaseTaskRepository {
         "description" to description,
         "deadline" to deadline,
         "isDone" to isDone,
-        "userId" to userId
+        "userId" to userId,
+        "prioridade" to prioridade
     )
 
     private fun QueryDocumentSnapshot.toTask(): Task {

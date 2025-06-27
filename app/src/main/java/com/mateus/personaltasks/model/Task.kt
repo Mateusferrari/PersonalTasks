@@ -1,15 +1,13 @@
 package com.mateus.personaltasks.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "tasks")
 data class Task(
     val id: String? = null,
-    var title: String,
-    var description: String,
-    var deadline: String,
-    var isDone: Boolean = false
+    val title: String = "",
+    val description: String = "",
+    val deadline: String = "",
+    val isDone: Boolean = false,
+    val deleted: Boolean = false,
+    val prioridade: String = "Média"  // Novo campo com valor padrão
 ) : Serializable
-
